@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Temp/GeneratedFromSurface-WavyDeformStandard.shader">
+    <Files>
+      <File FileName="Assets/ProcBubbleMaze/Shader/WavyDeformStandard.shader" Line="1" Column="1" />
+      <File FileName="Assets/ProceduraMapX/Scripts/PlaceObjectMap.cs" Line="1" Column="1" />
+      <File FileName="Assets/ProcBubbleMaze/Scripts/MenuCamera.cs" Line="1" Column="1" />
+      <File FileName="Assets/ProceduraMapX/Scripts/MapGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets/ProcBubbleMaze/Scripts/GameMusicManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/ProcBubbleMaze/Scripts/GotoScene.cs" Line="1" Column="1" />
+      <File FileName="Temp/GeneratedFromSurface-WavyDeformStandard.shader" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

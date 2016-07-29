@@ -1,0 +1,38 @@
+Keywords
+3d-plataformer 
+puzzle-plataformer
+projam
+procedural 
+exploration
+minigames
+3d
+endless
+abstract
+artgame
+low-poly
+cute
+survival
+puzzle
+
+Install:
+Instructions
+1. Choose the appropriate download for your system.
+2. Unzip the file downloaded.
+3. Run the game!
+
+Shor Description:
+A procedurally generated puzzle game.
+
+Long description:
+This game use procedural techniques to generate mazes, visual assets colors and positions.
+
+It's a simple game in which  the objective is to control a bubble and try to find a goal in a randomized maze without dying.
+
+This game was made for the Procedural Game Jam 2015. (http://itch.io/jam/procjam)
+
+Let me know if you enjoyed this game!
+
+Best,
+
+Mario.
+
