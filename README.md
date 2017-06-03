@@ -8,7 +8,7 @@ This code is relase under GPL V3 (https://www.gnu.org/licenses/quick-guide-gplv3
 
 # Compilation
 
-Download or clone the repository and use the Unity 3.5.6 or greater to compile it.
+Download or clone the repository and use the Unity 5.6.1f1 or greater to compile it.
 
 # Builds and Releases
 
