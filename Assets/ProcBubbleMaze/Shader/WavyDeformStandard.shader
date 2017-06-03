@@ -36,7 +36,7 @@ Shader "Deformation/WavyDeformStandard"
 		// Physically based Standard lighting model, and enable shadows on all light types
 		#pragma surface surf Standard vertex:vert alpha:fade
 		
-                //#pragma multi_compile SHADOWS_NATIVE SHADOWS_CUBE
+        //#pragma multi_compile SHADOWS_NATIVE SHADOWS_CUBE
 		//#include "UnityCG.cginc"
 		//#include "AutoLight.cginc"
 		// Use shader model 3.0 target, to get nicer looking lighting
@@ -70,18 +70,18 @@ Shader "Deformation/WavyDeformStandard"
 
 		    float n = p.x + p.y*157.0 + 113.0*p.z;
 		    return (lerp(lerp(lerp( hash(n+  0.0), hash(n+  1.0),f.x),
-		                   lerp( hash(n+157.0), hash(n+158.0),f.x),f.y),
+		               lerp( hash(n+157.0), hash(n+158.0),f.x),f.y),
 		               lerp(lerp( hash(n+113.0), hash(n+114.0),f.x),
-		                   lerp( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z));
+		               lerp( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z));
 		}
 
 		float turbulence( float3 p ) {
-			return (length(p)-0.5+ noise((p+float3(0, 0, _Time[1]/_WaveSpeed)) * _Power) * 0.25)+1;
+			return (length(p)-0.5+ noise((p+float3(0, 0, _Time[1]/_WaveSpeed)) * _Power) * 0.25);
 		}
 
 		void vert (inout appdata_full v) {
 			float3 p = float3(v.vertex.x,v.vertex.y,v.vertex.z);
-			v.vertex.w=turbulence(p)*v.vertex.w;
+			v.vertex.xyz += v.normal * turbulence(p);
 		}
 
 		struct Input {

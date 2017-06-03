@@ -76,7 +76,7 @@ namespace Utils.Map {
 			}
 			mesh.uv = uvs;
 			mesh.RecalculateBounds ();
-			mesh.Optimize ();
+//			mesh.Optimize ();
 			mapObj.GetComponent<MeshRenderer> ().shadowCastingMode = shadowMode;
 		}
 		
@@ -154,7 +154,7 @@ namespace Utils.Map {
 			}
 			mesh.uv = uvs;
 			mesh.RecalculateBounds ();
-			mesh.Optimize ();
+			// mesh.Optimize ();
 			mapInsideWalls.GetComponent<MeshFilter>().mesh = mesh;
 			
 			if (generateMeshCollider) {
