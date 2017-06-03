@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
 // Created by Mario Madureira Fontes
 // www.mario.pro.br
 // December - 2015
@@ -34,10 +36,10 @@ Shader "Deformation/WavyDeformStandard"
 		Blend SrcAlpha OneMinusSrcAlpha
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard vertex:vert alpha:fade
+		#pragma surface surf Standard addshadow fullforwardshadows vertex:vert alpha:fade
 		
         //#pragma multi_compile SHADOWS_NATIVE SHADOWS_CUBE
-		//#include "UnityCG.cginc"
+		#include "UnityCG.cginc"
 		//#include "AutoLight.cginc"
 		// Use shader model 3.0 target, to get nicer looking lighting
 		//#pragma target 3.0
@@ -81,7 +83,7 @@ Shader "Deformation/WavyDeformStandard"
 
 		void vert (inout appdata_full v) {
 			float3 p = float3(v.vertex.x,v.vertex.y,v.vertex.z);
-			v.vertex.xyz += v.normal * turbulence(p);
+			v.vertex.xyz += (v.normal * turbulence(p));
 		}
 
 		struct Input {
