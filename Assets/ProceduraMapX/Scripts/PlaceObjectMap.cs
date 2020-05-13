@@ -152,18 +152,18 @@ namespace Utils.Map {
 
 		public ObjectPlaceableOnMap(ObjectPlaceableOnMap other = null) {
 			if (other != null) {
-				this.ID = other.ID;
-				this.AmountMin = other.AmountMin;
-				this.AmountMax = other.AmountMax;
-				this.objectPrefab = other.objectPrefab;
-				this.DontUseSeededMapRandom = other.DontUseSeededMapRandom;
-				this.usePlaceBehaviour = other.usePlaceBehaviour;
-				this.placebehaviour = other.placebehaviour;
-				this.deltaPosition = other.deltaPosition;
-				this.deltaRotation = other.deltaRotation;
-				this.canMutateFlip = other.canMutateFlip;
-				this.canBreed = other.canBreed;
-				this.loadedDificultLevel = other.loadedDificultLevel;
+				ID = other.ID;
+				AmountMin = other.AmountMin;
+				AmountMax = other.AmountMax;
+				objectPrefab = other.objectPrefab;
+				DontUseSeededMapRandom = other.DontUseSeededMapRandom;
+				usePlaceBehaviour = other.usePlaceBehaviour;
+				placebehaviour = other.placebehaviour;
+				deltaPosition = other.deltaPosition;
+				deltaRotation = other.deltaRotation;
+				canMutateFlip = other.canMutateFlip;
+				canBreed = other.canBreed;
+				loadedDificultLevel = other.loadedDificultLevel;
 			}
 		}
 
