@@ -8,201 +8,179 @@ using System.Collections.Generic;
 
 namespace Utils.Map {
 
-	[RequireComponent(typeof(MapGenerator))]
-	public class PlaceObjectMap : MonoBehaviour {
-		public bool mutatePatterns = true;
-		public bool loadDificultLevel = true;
-		public string PlayerPrefsLevelDificultKey = "LevelDifficultyPlacement";
-		public ObjectPlaceableOnMap[] listObjects = new ObjectPlaceableOnMap[1];
-		private float loadedDificultLevel = 1.0f;
-		private int watermarkIndexListObjects = 0;
+    [RequireComponent(typeof(MapGenerator))]
+    public class PlaceObjectMap : MonoBehaviour {
+        public bool mutatePatterns = true;
+        public bool loadDificultLevel = true;
+        public string PlayerPrefsLevelDificultKey = "LevelDifficultyPlacement";
+        public ObjectPlaceableOnMap[] listObjects = new ObjectPlaceableOnMap[1];
+        private float loadedDificultLevel = 1.0f;
+        private int watermarkIndexListObjects = 0;
 
-		public IEnumerator Start() {
-			watermarkIndexListObjects = listObjects.Length;
-			yield return StartCoroutine( RefreshPlaceObjectMap() );
-		}
+        public IEnumerator Start() {
+            watermarkIndexListObjects = listObjects.Length;
+            yield return StartCoroutine(RefreshPlaceObjectMap());
+        }
 
-		public IEnumerator RefreshPlaceObjectMap() {
-			loadedDificultLevel = PlayerPrefs.GetFloat (PlayerPrefsLevelDificultKey,loadedDificultLevel);
-			cleanListObjectsFurtherThanWatermark ();
-			Breed ();
-			ApplyLevelAjustment ();
-			UpdatePlaceObjectMap ();
-			yield return 0;
-		}
+        public IEnumerator RefreshPlaceObjectMap() {
+            loadedDificultLevel = PlayerPrefs.GetFloat(PlayerPrefsLevelDificultKey, loadedDificultLevel);
+            cleanListObjectsFurtherThanWatermark();
+            Breed();
+            ApplyLevelAjustment();
+            UpdatePlaceObjectMap();
+            yield return 0;
+        }
 
-		private void cleanListObjectsFurtherThanWatermark ()
-		{
-			List<ObjectPlaceableOnMap> newList = new List<ObjectPlaceableOnMap> ();
-			for (int i = 0; i < watermarkIndexListObjects ; i++) {
-				newList.Add(listObjects[i]);
-			}
+        private void cleanListObjectsFurtherThanWatermark() {
+            List<ObjectPlaceableOnMap> newList = new List<ObjectPlaceableOnMap>();
+            for (int i = 0; i < watermarkIndexListObjects; i++) {
+                newList.Add(listObjects[i]);
+            }
 
-			if(newList.Count > 0){
-				listObjects = newList.ToArray();
-			}
-		}
+            if (newList.Count > 0) {
+                listObjects = newList.ToArray();
+            }
+        }
 
-		public void ApplyLevelAjustment() {
-			foreach (ObjectPlaceableOnMap obj in listObjects) {
-				obj.AdjustLevelDificult (loadedDificultLevel);
-			}
-		}
-		
-		public void UpdatePlaceObjectMap() {
-			foreach (ObjectPlaceableOnMap obj in listObjects) {
-				obj.UpdateLines ();
-			}
-		}
+        public void ApplyLevelAjustment() {
+            foreach (ObjectPlaceableOnMap obj in listObjects) {
+                obj.AdjustLevelDificult(loadedDificultLevel);
+            }
+        }
 
-		void Breed ()
-		{
-			List<ObjectPlaceableOnMap> newList = new List<ObjectPlaceableOnMap> ();
-			for(int i = 0; i < listObjects.Length;i++) {
-				newList.Add(listObjects[i]);
-				if(listObjects[i].canBreed) {
-					for(int j = 0; j < listObjects.Length;j++) {
-						if(listObjects[j].canBreed && j != i) {
-							ObjectPlaceableOnMap newBreed = new ObjectPlaceableOnMap(listObjects[j]);
-							newBreed.textPlaceMatrix = listObjects[i].textPlaceMatrix;
-							newBreed.deltaPosition = listObjects[i].deltaPosition;
-							newBreed.deltaRotation = listObjects[i].deltaRotation;
-							newBreed.AmountMax = listObjects[i].AmountMax;
-							newBreed.AmountMin = listObjects[i].AmountMin;
-							newList.Add(newBreed);
-						}
-					}
-				}
-			}
-			if(newList.Count > 0){
-				listObjects = newList.ToArray();
-			}
-		}
-	}
+        public void UpdatePlaceObjectMap() {
+            foreach (ObjectPlaceableOnMap obj in listObjects) {
+                obj.UpdateLines();
+            }
+        }
 
-	[System.Serializable]
-	public class LineIDsToPlace {
-		[HideInInspector]
-		public List<int> line = new List<int>();
+        void Breed() {
+            List<ObjectPlaceableOnMap> newList = new List<ObjectPlaceableOnMap>();
+            for (int i = 0; i < listObjects.Length; i++) {
+                newList.Add(listObjects[i]);
+                if (listObjects[i].canBreed) {
+                    for (int j = 0; j < listObjects.Length; j++) {
+                        if (listObjects[j].canBreed && j != i) {
+                            ObjectPlaceableOnMap newBreed = new ObjectPlaceableOnMap(listObjects[j]);
+                            newBreed.textPlaceMatrix = listObjects[i].textPlaceMatrix;
+                            newBreed.deltaRotation = listObjects[i].deltaRotation;
+                            newList.Add(newBreed);
+                        }
+                    }
+                }
+            }
+            if (newList.Count > 0) {
+                listObjects = newList.ToArray();
+            }
+        }
+    }
 
-		public LineIDsToPlace(string text = "0,0,0") {
-			string[] tempS = text.Split (',');
-			line.Clear ();
-			foreach (string s in tempS) {
-				line.Add(int.Parse(s));
-			}
-		}
+    [System.Serializable]
+    public class LineIDsToPlace {
+        [HideInInspector]
+        public List<int> line = new List<int>();
 
-		public void Flip(System.Random rand) {
-			if (rand.Next (0, 1000) < 500) {
-				List<int> tmp = new List<int> (line.Count);
-				for (int i = line.Count-1; i >= 0; i--) {
-					tmp.Add (line [i]);
-				}
-				line = tmp;
-			}
-		}
-		public void Invert() {
-			for (int i = 0; i < line.Count; i++) {
-				line[i] = line[i]==1?0:1;
-			}
-		}
-		
+        public LineIDsToPlace(string text = "0,0,0") {
+            string[] tempS = text.Split(',');
+            line.Clear();
+            foreach (string s in tempS) {
+                line.Add(int.Parse(s));
+            }
+        }
 
-	}
+        public void Flip(System.Random rand) {
+            if (rand.Next(0, 1000) < 500) {
+                List<int> tmp = new List<int>(line.Count);
+                for (int i = line.Count - 1; i >= 0; i--) {
+                    tmp.Add(line[i]);
+                }
+                line = tmp;
+            }
+        }
+        public void Invert() {
+            for (int i = 0; i < line.Count; i++) {
+                line[i] = line[i] == 1 ? 0 : 1;
+            }
+        }
 
-	[System.Serializable]
-	public class ObjectPlaceableOnMap 
-	{
-		public int ID = 2;
-		public bool useFixAmount;
-		public int amountFix;
-		[Range(0,100)]
-		public int AmountMin = 1;
-		[Range(0,100)]
-		public int AmountMax = 1;
-		public GameObject objectPrefab = null;
-		public bool DontUseSeededMapRandom = false;
-		public bool usePlaceBehaviour = false;
-		public PlaceBehaviour placebehaviour;
-		public Vector3 deltaPosition = Vector3.zero;
-		public Vector3 deltaRotation = Vector3.zero;
-		public bool canMutateFlip = false;
-		public bool canBreed = false;
-		public float loadedDificultLevel = 0.0f;
 
-		[Multiline()]
-		public string textPlaceMatrix = "0,0,0\n0,0,0\n0,0,0";
+    }
 
-		[HideInInspector]
-		public List<LineIDsToPlace> patternToPlace = new List<LineIDsToPlace>();
+    [System.Serializable]
+    public class ObjectPlaceableOnMap {
+        public int ID = 2;
+        [Range(1,100)]
+        public int amount = 1;
+        public GameObject objectPrefab = null;
+        public bool DontUseSeededMapRandom = false;
+        public bool usePlaceBehaviour = false;
+        public PlaceBehaviour placebehaviour;
+        public Vector3 deltaRotation = Vector3.zero;
+        public bool canMutateFlip = false;
+        public bool canBreed = false;
+        public float loadedDificultLevel = 0.0f;
+        private bool doneConvertTextPlaceMatrix = false;
 
-		private int GetAmountMin() {
-			return AmountMin + (int)((AmountMax-AmountMin) * (loadedDificultLevel));
-		}
+        [Multiline()]
+        public string textPlaceMatrix = "0,0,0\n0,0,0\n0,0,0";
 
-		private int GetAmountMax() {
-			return AmountMax - (int)((AmountMax-AmountMin) * (1.0f-loadedDificultLevel));
-		}
+        [HideInInspector]
+        public List<LineIDsToPlace> patternToPlace = new List<LineIDsToPlace>();
 
-		public void AdjustLevelDificult (float loadedDificultLevel)
-		{
-			this.loadedDificultLevel = loadedDificultLevel;
-		}
+        public void AdjustLevelDificult(float loadedDificultLevel) {
+            this.loadedDificultLevel = loadedDificultLevel;
+        }
 
-		public ObjectPlaceableOnMap(ObjectPlaceableOnMap other = null) {
-			if (other != null) {
-				ID = other.ID;
-				AmountMin = other.AmountMin;
-				AmountMax = other.AmountMax;
-				objectPrefab = other.objectPrefab;
-				DontUseSeededMapRandom = other.DontUseSeededMapRandom;
-				usePlaceBehaviour = other.usePlaceBehaviour;
-				placebehaviour = other.placebehaviour;
-				deltaPosition = other.deltaPosition;
-				deltaRotation = other.deltaRotation;
-				canMutateFlip = other.canMutateFlip;
-				canBreed = other.canBreed;
-				loadedDificultLevel = other.loadedDificultLevel;
-			}
-		}
+        public ObjectPlaceableOnMap(ObjectPlaceableOnMap other = null) {
+            if (other != null) {
+                ID = other.ID;
+                objectPrefab = other.objectPrefab;
+                DontUseSeededMapRandom = other.DontUseSeededMapRandom;
+                usePlaceBehaviour = other.usePlaceBehaviour;
+                placebehaviour = other.placebehaviour;
+                deltaRotation = other.deltaRotation;
+                canMutateFlip = other.canMutateFlip;
+                canBreed = other.canBreed;
+                loadedDificultLevel = other.loadedDificultLevel;
+            }
+        }
 
-		public void UpdateLines() {
-			string[] tempS = textPlaceMatrix.Split ('\n');
-			patternToPlace.Clear();
-			foreach (string s in tempS) {
-				patternToPlace.Add(new LineIDsToPlace(s));
-			}
-		}
+        public void UpdateLines() {
+            if (doneConvertTextPlaceMatrix) return;
+            string[] tempS = textPlaceMatrix.Split('\n');
+            patternToPlace.Clear();
+            foreach (string s in tempS) {
+                patternToPlace.Add(new LineIDsToPlace(s));
+            }
+            doneConvertTextPlaceMatrix = true;
+        }
 
-		public int GetAmount(System.Random rand, MapGenerator mapGen) {
-			if (useFixAmount)
-				return amountFix;
-			return (int)((rand.Next (GetAmountMin(),GetAmountMax())*mapGen.GetMapSize())/100.0f);
-		}
+        public int GetAmount(System.Random rand, MapGenerator mapGen) {
+             return amount;
+        }
 
-		public void Mutate(System.Random rand) {
-			if(canMutateFlip) {
-				// Try a chance to mutate
-				if(rand.Next(0,1000) < 500) {
-					Flip(rand);
-				}
-			}
-		}
-		
-		public void Invert() {
-			for (int i = 0; i < patternToPlace.Count; i++) {
-				patternToPlace[i].Invert();
-			}
-		}
+        public void Mutate(System.Random rand) {
+            if (canMutateFlip) {
+                // Try a chance to mutate
+                if (rand.Next(0, 1000) < 500) {
+                    Flip(rand);
+                }
+            }
+        }
 
-		public void Flip(System.Random rand) {
-			List<LineIDsToPlace> tmp = new List<LineIDsToPlace> ();
-			for (int i = patternToPlace.Count-1; i >= 0; i--) {
-				patternToPlace[i].Flip(rand);
-				tmp.Add(patternToPlace[i]);
-			}
-			patternToPlace = tmp;
-		}
-	}
+        public void Invert() {
+            for (int i = 0; i < patternToPlace.Count; i++) {
+                patternToPlace[i].Invert();
+            }
+        }
+
+        public void Flip(System.Random rand) {
+            List<LineIDsToPlace> tmp = new List<LineIDsToPlace>();
+            for (int i = patternToPlace.Count - 1; i >= 0; i--) {
+                patternToPlace[i].Flip(rand);
+                tmp.Add(patternToPlace[i]);
+            }
+            patternToPlace = tmp;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Camera))]
 public class CameraFollow2D : MonoBehaviour {
@@ -18,30 +18,47 @@ public class CameraFollow2D : MonoBehaviour {
 	[Range(0.0f,1.0f)]
 	public float propIncrement = 0.05f;
 
-	string ZoomInputOut = "Fire1";
-	string ZoomInputIn = "Fire3";
+    private ProcBubbleMazeActions input;
 
 	private Utils.Map.MapGenerator mapGen = null;
 	private float currentProp = 0.0f;
 
-	void Start () {
+    private void Awake() {
+        input = new ProcBubbleMazeActions();
+    }
+
+    void Start () {
 		FindObjectTagged ();
 		mapGen = FindObjectOfType<Utils.Map.MapGenerator> ();
 		propMin = propMin / mapGen.tileScale;
 		propMax = propMax * mapGen.tileScale;
 		currentProp = ((propMin+propMax)*(2.0f/3.0f));
 		ApplyPropCamera ();
-	}
-	
-	void Update () {
-		if (Input.GetButtonDown (ZoomInputOut)) {
-			currentProp += propIncrement;
-			currentProp = currentProp > propMax?propMax:currentProp;
-		}
-		if (Input.GetButtonDown (ZoomInputIn)) {
-			currentProp -= propIncrement;
-			currentProp = currentProp < propMin?propMin:currentProp;
-		}
+    }
+
+    private void OnEnable() {
+        input.Enable();
+        input.Zoom.Out.performed += ZoomOutPerformed;
+        input.Zoom.In.performed += ZoomInPerformed;
+    }
+
+    private void OnDisable() {
+        input.Disable();
+        input.Zoom.Out.performed -= ZoomOutPerformed;
+        input.Zoom.In.performed -= ZoomInPerformed;
+    }
+
+    private void ZoomInPerformed(InputAction.CallbackContext obj) {
+        currentProp -= propIncrement;
+        currentProp = currentProp < propMin ? propMin : currentProp;
+    }
+
+    private void ZoomOutPerformed(InputAction.CallbackContext obj) {
+        currentProp += propIncrement;
+        currentProp = currentProp > propMax ? propMax : currentProp;
+    }
+
+    void Update () {
 		if (targetObject == null) {
 			FindObjectTagged ();
 		}
@@ -50,6 +67,7 @@ public class CameraFollow2D : MonoBehaviour {
 		}
 		ApplyPropCamera ();
 	}
+
 	void ApplyPropCamera ()	{
 		if (targetObject == null)
 			return;
@@ -62,9 +80,10 @@ public class CameraFollow2D : MonoBehaviour {
 				-1.0f*(mapGen.GetMapSize() * currentProp)),Time.smoothDeltaTime*speed);
 		}
 	}
+
 	void FindObjectTagged () {
 		if (followByTag) {
-			targetObject = (GameObject.FindWithTag (tagObject) as GameObject);
+			targetObject = GameObject.FindWithTag (tagObject) as GameObject;
 		}
 	}
 }
