@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Created by Mario Madureira Fontes
 // www.mario.pro.br
 // December - 2015
@@ -85,7 +87,7 @@ SubShader
  		// v.vertex.w = NORMAL of the vertex
         v.vertex.w=t*v.vertex.w;
         
-        o.pos = mul( UNITY_MATRIX_MVP, v.vertex );
+        o.pos = UnityObjectToClipPos( v.vertex );
         
         o.uv = v.texcoord;
  
